@@ -7,6 +7,8 @@ export interface StorePrice {
   address: string;
   inStock: boolean;
   lastUpdated: Date;
+  discount?: number; // percentage discount
+  dealText?: string; // promotional text
 }
 
 export interface Product {

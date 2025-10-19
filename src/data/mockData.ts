@@ -15,6 +15,8 @@ export const mockProducts: Record<string, Product> = {
         address: "123 Main St",
         inStock: true,
         lastUpdated: new Date(),
+        discount: 15,
+        dealText: "Weekly Special",
       },
       {
         id: "s2",
@@ -33,6 +35,7 @@ export const mockProducts: Record<string, Product> = {
         address: "789 Pine Rd",
         inStock: true,
         lastUpdated: new Date(),
+        discount: 10,
       },
       {
         id: "s4",
@@ -59,6 +62,8 @@ export const mockProducts: Record<string, Product> = {
         address: "123 Main St",
         inStock: true,
         lastUpdated: new Date(),
+        discount: 20,
+        dealText: "Buy 2 Get 1 Free",
       },
       {
         id: "s3",
@@ -103,6 +108,7 @@ export const mockProducts: Record<string, Product> = {
         address: "789 Pine Rd",
         inStock: true,
         lastUpdated: new Date(),
+        dealText: "Member's Price",
       },
       {
         id: "s1",

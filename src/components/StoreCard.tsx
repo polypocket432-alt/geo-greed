@@ -1,4 +1,4 @@
-import { MapPin, Store } from "lucide-react";
+import { MapPin, Store, Tag } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { StorePrice } from "@/types/product";
@@ -24,12 +24,26 @@ export function StoreCard({ store, lowestPrice }: StoreCardProps) {
             <div className="flex-1 min-w-0">
               <div className="flex items-start justify-between gap-2 mb-2">
                 <h3 className="font-semibold text-lg truncate">{store.storeName}</h3>
-                {isLowestPrice && (
-                  <Badge variant="success" className="flex-shrink-0">
-                    Best Price
-                  </Badge>
-                )}
+                <div className="flex gap-2 flex-shrink-0">
+                  {isLowestPrice && (
+                    <Badge variant="success">
+                      Best Price
+                    </Badge>
+                  )}
+                  {store.discount && (
+                    <Badge variant="destructive" className="bg-destructive/90">
+                      {store.discount}% OFF
+                    </Badge>
+                  )}
+                </div>
               </div>
+              
+              {store.dealText && (
+                <div className="flex items-center gap-1.5 mb-2 text-sm font-medium text-primary">
+                  <Tag className="h-4 w-4" />
+                  <span>{store.dealText}</span>
+                </div>
+              )}
               
               <div className="flex items-center gap-1 text-sm text-muted-foreground mb-1">
                 <MapPin className="h-4 w-4" />
