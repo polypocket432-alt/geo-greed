@@ -381,6 +381,160 @@ export const mockProducts: Record<string, Product[]> = {
       ],
     },
   ],
+  "apples": [
+    {
+      id: "10",
+      name: "Gala Apples",
+      brand: "Pink Lady",
+      size: "6 pack",
+      category: "Fresh Produce",
+      averagePrice: 2.20,
+      stores: [
+        {
+          id: "s2",
+          storeName: "Sainsbury's",
+          price: 2.00,
+          distance: 2.0,
+          address: "456 King's Road, London",
+          inStock: true,
+          lastUpdated: new Date(),
+          discount: 10,
+        },
+        {
+          id: "s1",
+          storeName: "Tesco",
+          price: 2.20,
+          distance: 1.2,
+          address: "123 High Street, London",
+          inStock: true,
+          lastUpdated: new Date(),
+        },
+      ],
+    },
+  ],
+  "potatoes": [
+    {
+      id: "11",
+      name: "White Potatoes",
+      brand: "Maris Piper",
+      size: "2kg",
+      category: "Fresh Produce",
+      averagePrice: 1.50,
+      stores: [
+        {
+          id: "s3",
+          storeName: "Asda",
+          price: 1.30,
+          distance: 0.8,
+          address: "789 Queen Street, London",
+          inStock: true,
+          lastUpdated: new Date(),
+          discount: 15,
+        },
+        {
+          id: "s1",
+          storeName: "Tesco",
+          price: 1.50,
+          distance: 1.2,
+          address: "123 High Street, London",
+          inStock: true,
+          lastUpdated: new Date(),
+        },
+      ],
+    },
+  ],
+  "carrots": [
+    {
+      id: "12",
+      name: "Carrots",
+      brand: "Tesco",
+      size: "1kg",
+      category: "Fresh Produce",
+      averagePrice: 0.70,
+      stores: [
+        {
+          id: "s1",
+          storeName: "Tesco",
+          price: 0.60,
+          distance: 1.2,
+          address: "123 High Street, London",
+          inStock: true,
+          lastUpdated: new Date(),
+          discount: 10,
+        },
+        {
+          id: "s3",
+          storeName: "Asda",
+          price: 0.65,
+          distance: 0.8,
+          address: "789 Queen Street, London",
+          inStock: true,
+          lastUpdated: new Date(),
+        },
+      ],
+    },
+  ],
+  "onions": [
+    {
+      id: "13",
+      name: "Brown Onions",
+      brand: "Tesco",
+      size: "1kg",
+      category: "Fresh Produce",
+      averagePrice: 0.85,
+      stores: [
+        {
+          id: "s3",
+          storeName: "Asda",
+          price: 0.75,
+          distance: 0.8,
+          address: "789 Queen Street, London",
+          inStock: true,
+          lastUpdated: new Date(),
+        },
+        {
+          id: "s2",
+          storeName: "Sainsbury's",
+          price: 0.90,
+          distance: 2.0,
+          address: "456 King's Road, London",
+          inStock: true,
+          lastUpdated: new Date(),
+        },
+      ],
+    },
+  ],
+  "yogurt": [
+    {
+      id: "14",
+      name: "Natural Yogurt",
+      brand: "Rachel's Organic",
+      size: "450g",
+      category: "Dairy",
+      averagePrice: 2.00,
+      stores: [
+        {
+          id: "s4",
+          storeName: "Waitrose",
+          price: 1.85,
+          distance: 3.1,
+          address: "321 Park Lane, London",
+          inStock: true,
+          lastUpdated: new Date(),
+          discount: 10,
+        },
+        {
+          id: "s2",
+          storeName: "Sainsbury's",
+          price: 2.00,
+          distance: 2.0,
+          address: "456 King's Road, London",
+          inStock: true,
+          lastUpdated: new Date(),
+        },
+      ],
+    },
+  ],
 };
 
 export const relatedProductsMap: Record<string, RelatedProduct[]> = {
@@ -425,15 +579,31 @@ export const relatedProductsMap: Record<string, RelatedProduct[]> = {
     { id: "r22", name: "Apples", category: "Fresh Produce", lowestPrice: 1.50 },
     { id: "r23", name: "Oranges", category: "Fresh Produce", lowestPrice: 1.20 },
   ],
+  "apples": [
+    { id: "r24", name: "Bananas", category: "Fresh Produce", lowestPrice: 0.85 },
+    { id: "r25", name: "Oranges", category: "Fresh Produce", lowestPrice: 1.20 },
+  ],
+  "potatoes": [
+    { id: "r26", name: "Carrots", category: "Fresh Produce", lowestPrice: 0.60 },
+    { id: "r27", name: "Onions", category: "Fresh Produce", lowestPrice: 0.75 },
+  ],
+  "carrots": [
+    { id: "r28", name: "Potatoes", category: "Fresh Produce", lowestPrice: 1.30 },
+    { id: "r29", name: "Onions", category: "Fresh Produce", lowestPrice: 0.75 },
+  ],
+  "onions": [
+    { id: "r30", name: "Garlic", category: "Fresh Produce", lowestPrice: 0.80 },
+    { id: "r31", name: "Potatoes", category: "Fresh Produce", lowestPrice: 1.30 },
+  ],
+  "yogurt": [
+    { id: "r32", name: "Greek Yogurt", category: "Dairy", lowestPrice: 2.50 },
+    { id: "r33", name: "Milk", category: "Dairy", lowestPrice: 1.55 },
+  ],
 };
 
 export function searchProduct(query: string): Product[] | null {
   const normalizedQuery = query.toLowerCase().trim();
-  console.log("searchProduct - normalized query:", normalizedQuery);
-  console.log("searchProduct - available keys:", Object.keys(mockProducts));
-  const result = mockProducts[normalizedQuery] || null;
-  console.log("searchProduct - result:", result);
-  return result;
+  return mockProducts[normalizedQuery] || null;
 }
 
 export function getRelatedProducts(query: string): RelatedProduct[] {
