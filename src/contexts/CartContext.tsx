@@ -110,80 +110,65 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
     if (allStoresHaveEnoughItems) {
       // Recommend shopping at all stores
-      const totalCost = groups.reduce((sum, g) => sum + g.total, 0);
       return {
         groups: groups.map(g => ({ ...g, recommended: true })),
-        recommendation: `Visit ${groups.length} stores to get the best prices on all items.`,
+        recommendation: `Shopping at ${groups.length} stores gets you the best prices on all items.`,
         potentialSavings: 0,
       };
     }
 
-    // Find stores with fewer than 5 items
-    const smallStores = groups.filter(g => g.items.length < 5);
-    const largeStores = groups.filter(g => g.items.length >= 5);
+    // Find the store with the most items as primary recommendation
+    const sortedByItemCount = [...groups].sort((a, b) => b.items.length - a.items.length);
+    const primaryStore = sortedByItemCount[0];
+    
+    // Calculate what it would cost to buy everything at the primary store
+    let consolidatedCost = 0;
+    const productPriceMap = new Map<string, number>();
+    
+    // Build a map of product prices at primary store
+    cart.forEach(item => {
+      if (item.store.id === primaryStore.storeId) {
+        productPriceMap.set(item.product.id, item.store.price);
+      }
+    });
+    
+    // Calculate consolidated cost (estimate higher prices for items not at primary store)
+    cart.forEach(item => {
+      const quantity = item.quantity;
+      if (item.store.id === primaryStore.storeId) {
+        consolidatedCost += item.store.price * quantity;
+      } else {
+        // Use current price + 10% as estimate for same product at primary store
+        const estimatedPrice = item.store.price * 1.1;
+        consolidatedCost += estimatedPrice * quantity;
+      }
+    });
 
-    if (largeStores.length === 0) {
-      // No store has 5+ items, find the cheapest overall
-      const sortedByTotal = [...groups].sort((a, b) => a.total - b.total);
-      const cheapestStore = sortedByTotal[0];
-      
-      // Calculate alternative cost if buying everything at cheapest store
-      let alternativeTotal = 0;
-      cart.forEach((item) => {
-        // Find the price of this product at the cheapest store
-        const productInCheapestStore = cart.find(
-          ci => ci.product.id === item.product.id && ci.store.id === cheapestStore.storeId
-        );
-        
-        if (productInCheapestStore) {
-          alternativeTotal += productInCheapestStore.store.price * item.quantity;
-        } else {
-          // If product not available at cheapest store, use highest price from cart
-          alternativeTotal += item.store.price * item.quantity;
-        }
-      });
-
-      const currentTotal = groups.reduce((sum, g) => sum + g.total, 0);
-      const extraCost = alternativeTotal - currentTotal;
-
+    // Calculate current multi-store cost
+    const currentMultiStoreCost = groups.reduce((sum, g) => sum + g.total, 0);
+    const savings = consolidatedCost - currentMultiStoreCost;
+    
+    // Determine recommendation based on savings
+    const smallStoreCount = groups.filter(g => g.items.length < 5).length;
+    
+    if (savings > 5) {
+      // Significant savings by visiting multiple stores
+      return {
+        groups: groups.map(g => ({ ...g, recommended: true })),
+        recommendation: `To save £${savings.toFixed(2)}, visit all ${groups.length} stores. To save time, shop only at ${primaryStore.storeName} (extra cost: £${savings.toFixed(2)}).`,
+        potentialSavings: savings,
+      };
+    } else {
+      // Small savings, recommend single store
       return {
         groups: groups.map(g => ({
           ...g,
-          recommended: g.storeId === cheapestStore.storeId,
-          alternativeTotal: g.storeId === cheapestStore.storeId ? alternativeTotal : undefined,
+          recommended: g.storeId === primaryStore.storeId,
         })),
-        recommendation: `Shop at ${cheapestStore.storeName} for all items to save time. Extra cost: £${extraCost.toFixed(2)} vs shopping at multiple stores.`,
-        potentialSavings: -extraCost,
+        recommendation: `Save time - shop at ${primaryStore.storeName} for all items. Extra cost: only £${savings.toFixed(2)} vs visiting ${groups.length} stores.`,
+        potentialSavings: savings,
       };
     }
-
-    // We have large stores and small stores
-    // Recommend consolidating small store items into the nearest large store
-    const primaryStore = largeStores.sort((a, b) => a.distance - b.distance)[0];
-    
-    let consolidatedTotal = primaryStore.total;
-    smallStores.forEach(smallStore => {
-      smallStore.items.forEach(item => {
-        // Assume product might be slightly more expensive at primary store
-        // For simplicity, add 10% to the price (in real scenario, you'd check actual prices)
-        consolidatedTotal += item.store.price * 1.1 * item.quantity;
-      });
-    });
-
-    const currentTotal = groups.reduce((sum, g) => sum + g.total, 0);
-    const extraCost = consolidatedTotal - currentTotal;
-
-    return {
-      groups: groups.map(g => ({
-        ...g,
-        recommended: largeStores.some(ls => ls.storeId === g.storeId),
-        alternativeTotal: g.storeId === primaryStore.storeId ? consolidatedTotal : undefined,
-      })),
-      recommendation: extraCost < 5
-        ? `Shop at ${primaryStore.storeName} and ${largeStores.length > 1 ? largeStores.slice(1).map(s => s.storeName).join(' and ') : ''} to maximize savings.`.trim()
-        : `Consider shopping only at ${primaryStore.storeName}. Small extra cost (£${extraCost.toFixed(2)}) saves you extra trips.`,
-      potentialSavings: -extraCost,
-    };
   };
 
   const getTotalItems = () => {

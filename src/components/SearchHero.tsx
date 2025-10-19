@@ -2,24 +2,15 @@ import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import heroImage from "@/assets/hero-shopping.jpg";
-import { useState } from "react";
 import { CartButton } from "./CartButton";
 import { LocationButton } from "./LocationButton";
+import { SearchAutocomplete } from "./SearchAutocomplete";
 
 interface SearchHeroProps {
   onSearch: (query: string) => void;
 }
 
 export function SearchHero({ onSearch }: SearchHeroProps) {
-  const [searchQuery, setSearchQuery] = useState("");
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (searchQuery.trim()) {
-      onSearch(searchQuery);
-    }
-  };
-
   return (
     <section className="relative overflow-hidden bg-gradient-hero">
       <div className="absolute top-4 right-4 z-20 flex gap-2">
@@ -43,33 +34,14 @@ export function SearchHero({ onSearch }: SearchHeroProps) {
             Compare prices across local UK supermarkets and save money on your weekly shop
           </p>
 
-          <form onSubmit={handleSubmit} className="max-w-2xl mx-auto">
-            <div className="flex gap-2 p-2 bg-card rounded-xl shadow-hover">
-              <div className="flex-1 relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                <Input
-                  type="text"
-                  placeholder="Search for products (e.g., milk, bread, eggs, chicken, rice)..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-10 h-12 border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
-                />
-              </div>
-              <Button type="submit" size="lg" className="px-8">
-                Search
-              </Button>
-            </div>
-          </form>
+          <SearchAutocomplete onSearch={onSearch} />
 
           <div className="flex flex-wrap justify-center gap-2 pt-4">
             <span className="text-sm text-muted-foreground">Popular:</span>
             {["Milk", "Bread", "Eggs", "Chicken", "Cheese"].map((term) => (
               <button
                 key={term}
-                onClick={() => {
-                  setSearchQuery(term);
-                  onSearch(term);
-                }}
+                onClick={() => onSearch(term)}
                 className="text-sm px-3 py-1 rounded-full bg-secondary hover:bg-secondary/80 transition-colors"
               >
                 {term}
