@@ -1,9 +1,10 @@
-import { useState } from "react";
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import heroImage from "@/assets/hero-shopping.jpg";
+import { useState } from "react";
 import { CartButton } from "./CartButton";
+import { LocationButton } from "./LocationButton";
 
 interface SearchHeroProps {
   onSearch: (query: string) => void;
@@ -21,7 +22,8 @@ export function SearchHero({ onSearch }: SearchHeroProps) {
 
   return (
     <section className="relative overflow-hidden bg-gradient-hero">
-      <div className="absolute top-4 right-4 z-20">
+      <div className="absolute top-4 right-4 z-20 flex gap-2">
+        <LocationButton />
         <CartButton />
       </div>
       <div className="absolute inset-0 z-0">

@@ -5,6 +5,8 @@ export interface StorePrice {
   price: number;
   distance: number; // in kilometers
   address: string;
+  latitude: number;
+  longitude: number;
   inStock: boolean;
   lastUpdated: Date;
   discount?: number; // percentage discount
