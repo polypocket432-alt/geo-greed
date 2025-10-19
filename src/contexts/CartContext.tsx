@@ -1,6 +1,8 @@
-import React, { createContext, useContext, useState, ReactNode } from "react";
+import React, { createContext, useContext, useState, ReactNode, useEffect } from "react";
 import { CartItem, StoreGroup } from "@/types/cart";
 import { Product, StorePrice } from "@/types/product";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "./AuthContext";
 
 interface CartContextType {
   cart: CartItem[];
@@ -22,6 +24,94 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export function CartProvider({ children }: { children: ReactNode }) {
   const [cart, setCart] = useState<CartItem[]>([]);
+  const { user } = useAuth();
+
+  // Load cart from database when user logs in
+  useEffect(() => {
+    if (user) {
+      loadCartFromDatabase();
+    } else {
+      setCart([]);
+    }
+  }, [user]);
+
+  const loadCartFromDatabase = async () => {
+    if (!user) return;
+
+    const { data, error } = await supabase
+      .from("cart_items")
+      .select("*")
+      .eq("user_id", user.id);
+
+    if (error) {
+      console.error("Error loading cart:", error);
+      return;
+    }
+
+    if (data) {
+      const cartItems: CartItem[] = data.map((item) => ({
+        id: item.id,
+        product: {
+          id: item.product_id,
+          name: item.product_name,
+          brand: item.product_brand || undefined,
+          size: item.product_size || undefined,
+          category: item.product_category,
+          averagePrice: item.price,
+          stores: [],
+        },
+        store: {
+          id: item.store_id,
+          storeName: item.store_name,
+          address: item.store_address,
+          price: item.price,
+          distance: 0,
+          latitude: 0,
+          longitude: 0,
+          inStock: true,
+          lastUpdated: new Date(),
+        },
+        quantity: item.quantity,
+      }));
+      setCart(cartItems);
+    }
+  };
+
+  const saveCartItemToDatabase = async (item: CartItem) => {
+    if (!user) return;
+
+    const { error } = await supabase.from("cart_items").upsert({
+      id: item.id,
+      user_id: user.id,
+      product_id: item.product.id,
+      product_name: item.product.name,
+      product_brand: item.product.brand || null,
+      product_size: item.product.size || null,
+      product_category: item.product.category,
+      store_id: item.store.id,
+      store_name: item.store.storeName,
+      store_address: item.store.address,
+      price: item.store.price,
+      quantity: item.quantity,
+    });
+
+    if (error) {
+      console.error("Error saving cart item:", error);
+    }
+  };
+
+  const deleteCartItemFromDatabase = async (itemId: string) => {
+    if (!user) return;
+
+    const { error } = await supabase
+      .from("cart_items")
+      .delete()
+      .eq("id", itemId);
+
+    if (error) {
+      console.error("Error deleting cart item:", error);
+    }
+  };
 
   const addToCart = (product: Product, store: StorePrice) => {
     const existingItem = cart.find(
@@ -29,13 +119,13 @@ export function CartProvider({ children }: { children: ReactNode }) {
     );
 
     if (existingItem) {
+      const updatedItem = { ...existingItem, quantity: existingItem.quantity + 1 };
       setCart(
         cart.map((item) =>
-          item.id === existingItem.id
-            ? { ...item, quantity: item.quantity + 1 }
-            : item
+          item.id === existingItem.id ? updatedItem : item
         )
       );
+      saveCartItemToDatabase(updatedItem);
     } else {
       const newItem: CartItem = {
         id: `${product.id}-${store.id}-${Date.now()}`,
@@ -44,26 +134,42 @@ export function CartProvider({ children }: { children: ReactNode }) {
         quantity: 1,
       };
       setCart([...cart, newItem]);
+      saveCartItemToDatabase(newItem);
     }
   };
 
   const removeFromCart = (itemId: string) => {
     setCart(cart.filter((item) => item.id !== itemId));
+    deleteCartItemFromDatabase(itemId);
   };
 
   const updateQuantity = (itemId: string, quantity: number) => {
     if (quantity <= 0) {
       removeFromCart(itemId);
     } else {
-      setCart(
-        cart.map((item) =>
-          item.id === itemId ? { ...item, quantity } : item
-        )
+      const updatedCart = cart.map((item) =>
+        item.id === itemId ? { ...item, quantity } : item
       );
+      setCart(updatedCart);
+      
+      const updatedItem = updatedCart.find((item) => item.id === itemId);
+      if (updatedItem) {
+        saveCartItemToDatabase(updatedItem);
+      }
     }
   };
 
-  const clearCart = () => {
+  const clearCart = async () => {
+    if (user) {
+      const { error } = await supabase
+        .from("cart_items")
+        .delete()
+        .eq("user_id", user.id);
+
+      if (error) {
+        console.error("Error clearing cart:", error);
+      }
+    }
     setCart([]);
   };
 

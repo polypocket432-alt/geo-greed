@@ -1,21 +1,32 @@
-import { Search } from "lucide-react";
+import { Search, LogOut } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import heroImage from "@/assets/hero-shopping.jpg";
 import { CartButton } from "./CartButton";
 import { LocationButton } from "./LocationButton";
 import { SearchAutocomplete } from "./SearchAutocomplete";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface SearchHeroProps {
   onSearch: (query: string) => void;
 }
 
 export function SearchHero({ onSearch }: SearchHeroProps) {
+  const { signOut } = useAuth();
+  
   return (
     <section className="relative overflow-hidden bg-gradient-hero">
       <div className="absolute top-4 right-4 z-20 flex gap-2">
         <LocationButton />
         <CartButton />
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={signOut}
+          title="Sign Out"
+        >
+          <LogOut className="h-5 w-5" />
+        </Button>
       </div>
       <div className="absolute inset-0 z-0">
         <img 
