@@ -24,6 +24,7 @@ export const mockProducts: Record<string, Product[]> = {
           lastUpdated: new Date(),
           discount: 15,
           dealText: "Clubcard Price",
+          storeUrl: "https://www.tesco.com/groceries/",
         },
         {
           id: "s2",
@@ -35,6 +36,7 @@ export const mockProducts: Record<string, Product[]> = {
           longitude: STORE_COORDINATES.s2.lon,
           inStock: true,
           lastUpdated: new Date(),
+          storeUrl: "https://www.sainsburys.co.uk/shop/gb/groceries",
         },
         {
           id: "s3",
@@ -47,6 +49,7 @@ export const mockProducts: Record<string, Product[]> = {
           inStock: true,
           lastUpdated: new Date(),
           discount: 10,
+          storeUrl: "https://groceries.asda.com/",
         },
       ],
     },
@@ -70,6 +73,7 @@ export const mockProducts: Record<string, Product[]> = {
           lastUpdated: new Date(),
           discount: 10,
           dealText: "Nectar Offer",
+          storeUrl: "https://www.sainsburys.co.uk/shop/gb/groceries",
         },
         {
           id: "s4",
@@ -81,6 +85,7 @@ export const mockProducts: Record<string, Product[]> = {
           longitude: STORE_COORDINATES.s4.lon,
           inStock: true,
           lastUpdated: new Date(),
+          storeUrl: "https://www.waitrose.com/ecom/shop/browse/groceries",
         },
       ],
     },

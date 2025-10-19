@@ -1,10 +1,11 @@
-import { MapPin, Store, Tag, ShoppingCart } from "lucide-react";
+import { MapPin, Store, Tag, ShoppingCart, ExternalLink } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { StorePrice, Product } from "@/types/product";
 import { useCart } from "@/contexts/CartContext";
 import { useToast } from "@/hooks/use-toast";
+import { getStoreUrl } from "@/utils/storeUrls";
 
 interface StoreCardProps {
   store: StorePrice;
@@ -17,6 +18,7 @@ export function StoreCard({ store, lowestPrice, product }: StoreCardProps) {
   const savings = store.price - lowestPrice;
   const { addToCart } = useCart();
   const { toast } = useToast();
+  const storeUrl = store.storeUrl || getStoreUrl(store.storeName);
 
   const handleAddToCart = () => {
     addToCart(product, store);
@@ -61,10 +63,10 @@ export function StoreCard({ store, lowestPrice, product }: StoreCardProps) {
               
               <div className="flex items-center gap-1 text-sm text-muted-foreground mb-1">
                 <MapPin className="h-4 w-4" />
-                <span>{store.distance} km away</span>
+                <span className="font-medium">{store.distance} km away</span>
               </div>
               
-              <p className="text-sm text-muted-foreground truncate">{store.address}</p>
+              <p className="text-sm text-muted-foreground truncate font-medium">{store.address}</p>
               
               {!store.inStock && (
                 <Badge variant="destructive" className="mt-2">
@@ -92,6 +94,18 @@ export function StoreCard({ store, lowestPrice, product }: StoreCardProps) {
               <ShoppingCart className="h-4 w-4 mr-1" />
               Add to Cart
             </Button>
+            {storeUrl && (
+              <Button
+                variant="outline"
+                size="sm"
+                asChild
+              >
+                <a href={storeUrl} target="_blank" rel="noopener noreferrer">
+                  <ExternalLink className="h-4 w-4 mr-1" />
+                  Visit Store
+                </a>
+              </Button>
+            )}
           </div>
         </div>
       </CardContent>

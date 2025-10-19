@@ -11,6 +11,7 @@ export interface StorePrice {
   lastUpdated: Date;
   discount?: number; // percentage discount
   dealText?: string; // promotional text
+  storeUrl?: string; // link to online store
 }
 
 export interface Product {
