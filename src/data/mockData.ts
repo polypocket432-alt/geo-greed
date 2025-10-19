@@ -429,7 +429,11 @@ export const relatedProductsMap: Record<string, RelatedProduct[]> = {
 
 export function searchProduct(query: string): Product[] | null {
   const normalizedQuery = query.toLowerCase().trim();
-  return mockProducts[normalizedQuery] || null;
+  console.log("searchProduct - normalized query:", normalizedQuery);
+  console.log("searchProduct - available keys:", Object.keys(mockProducts));
+  const result = mockProducts[normalizedQuery] || null;
+  console.log("searchProduct - result:", result);
+  return result;
 }
 
 export function getRelatedProducts(query: string): RelatedProduct[] {

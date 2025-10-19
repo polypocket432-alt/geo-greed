@@ -11,8 +11,10 @@ const Index = () => {
   const [relatedProducts, setRelatedProducts] = useState<RelatedProduct[]>([]);
 
   const handleSearch = (query: string) => {
+    console.log("Searching for:", query);
     setSearchQuery(query);
     const product = searchProduct(query);
+    console.log("Search result:", product);
     setCurrentProduct(product);
     
     if (product) {
