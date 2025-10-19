@@ -19,7 +19,7 @@ export function SearchResults({ product, searchQuery }: SearchResultsProps) {
             <AlertCircle className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
             <h2 className="text-2xl font-bold mb-2">No results found</h2>
             <p className="text-muted-foreground">
-              We couldn't find "{searchQuery}". Try searching for "organic milk", "bread", or "eggs".
+              We couldn't find "{searchQuery}". Try searching for "milk", "bread", "eggs", "chicken", or "rice".
             </p>
           </div>
         </div>
@@ -53,7 +53,7 @@ export function SearchResults({ product, searchQuery }: SearchResultsProps) {
                     <span className="font-semibold">Save up to</span>
                   </div>
                   <div className="text-2xl font-bold text-success">
-                    ${potentialSavings.toFixed(2)}
+                    £{potentialSavings.toFixed(2)}
                   </div>
                 </div>
               )}

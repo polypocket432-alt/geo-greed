@@ -38,7 +38,7 @@ export function SearchHero({ onSearch }: SearchHeroProps) {
             Find the <span className="text-primary">Best Prices</span> Near You
           </h1>
           <p className="text-lg md:text-xl text-muted-foreground">
-            Compare prices across local supermarkets and save money on every purchase
+            Compare prices across local UK supermarkets and save money on your weekly shop
           </p>
 
           <form onSubmit={handleSubmit} className="max-w-2xl mx-auto">
@@ -47,7 +47,7 @@ export function SearchHero({ onSearch }: SearchHeroProps) {
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                 <Input
                   type="text"
-                  placeholder="Search for products (e.g., organic milk, bread, eggs)..."
+                  placeholder="Search for products (e.g., milk, bread, eggs, chicken, rice)..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="pl-10 h-12 border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
@@ -61,7 +61,7 @@ export function SearchHero({ onSearch }: SearchHeroProps) {
 
           <div className="flex flex-wrap justify-center gap-2 pt-4">
             <span className="text-sm text-muted-foreground">Popular:</span>
-            {["Organic Milk", "Bread", "Eggs"].map((term) => (
+            {["Milk", "Bread", "Eggs", "Chicken", "Cheese"].map((term) => (
               <button
                 key={term}
                 onClick={() => {

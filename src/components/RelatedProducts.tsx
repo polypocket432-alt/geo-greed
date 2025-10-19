@@ -33,7 +33,7 @@ export function RelatedProducts({ products, onProductClick }: RelatedProductsPro
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-muted-foreground">From</span>
                   <span className="text-lg font-bold text-primary">
-                    ${product.lowestPrice.toFixed(2)}
+                    £{product.lowestPrice.toFixed(2)}
                   </span>
                 </div>
               </CardContent>

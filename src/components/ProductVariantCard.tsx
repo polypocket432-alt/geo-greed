@@ -24,7 +24,7 @@ export function ProductVariantCard({ product }: ProductVariantCardProps) {
               {product.size && ` (${product.size})`}
             </h3>
             <p className="text-sm text-muted-foreground">
-              From ${lowestPrice.toFixed(2)} • {product.stores.length} store{product.stores.length !== 1 ? 's' : ''}
+              From £{lowestPrice.toFixed(2)} • {product.stores.length} store{product.stores.length !== 1 ? 's' : ''}
             </p>
           </div>
         </div>

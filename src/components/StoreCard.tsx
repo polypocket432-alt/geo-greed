@@ -76,11 +76,11 @@ export function StoreCard({ store, lowestPrice, product }: StoreCardProps) {
 
           <div className="text-right flex-shrink-0 flex flex-col items-end gap-2">
             <div className="text-3xl font-bold text-primary">
-              ${store.price.toFixed(2)}
+              £{store.price.toFixed(2)}
             </div>
             {!isLowestPrice && savings > 0 && (
               <div className="text-sm text-muted-foreground">
-                +${savings.toFixed(2)}
+                +£{savings.toFixed(2)}
               </div>
             )}
             <Button

@@ -61,7 +61,7 @@ export function CartView() {
               </div>
               <div className="text-right">
                 <div className="text-xl font-bold text-primary">
-                  ${group.total.toFixed(2)}
+                  £{group.total.toFixed(2)}
                 </div>
                 <div className="text-xs text-muted-foreground">
                   {group.items.length} item{group.items.length !== 1 ? 's' : ''}
@@ -79,7 +79,7 @@ export function CartView() {
                     {item.product.size && ` (${item.product.size})`}
                   </h4>
                   <p className="text-xs text-muted-foreground">
-                    ${item.store.price.toFixed(2)} each
+                    £{item.store.price.toFixed(2)} each
                   </p>
                 </div>
                 
@@ -121,7 +121,7 @@ export function CartView() {
       <div className="space-y-4">
         <div className="flex items-center justify-between text-lg font-bold">
           <span>Total</span>
-          <span className="text-primary">${getTotalPrice().toFixed(2)}</span>
+          <span className="text-primary">£{getTotalPrice().toFixed(2)}</span>
         </div>
 
         <Button

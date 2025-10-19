@@ -152,7 +152,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
           recommended: g.storeId === cheapestStore.storeId,
           alternativeTotal: g.storeId === cheapestStore.storeId ? alternativeTotal : undefined,
         })),
-        recommendation: `Shop at ${cheapestStore.storeName} for all items to save time. Extra cost: $${extraCost.toFixed(2)} vs shopping at multiple stores.`,
+        recommendation: `Shop at ${cheapestStore.storeName} for all items to save time. Extra cost: £${extraCost.toFixed(2)} vs shopping at multiple stores.`,
         potentialSavings: -extraCost,
       };
     }
@@ -181,7 +181,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
       })),
       recommendation: extraCost < 5
         ? `Shop at ${primaryStore.storeName} and ${largeStores.length > 1 ? largeStores.slice(1).map(s => s.storeName).join(' and ') : ''} to maximize savings.`.trim()
-        : `Consider shopping only at ${primaryStore.storeName}. Small extra cost ($${extraCost.toFixed(2)}) saves you extra trips.`,
+        : `Consider shopping only at ${primaryStore.storeName}. Small extra cost (£${extraCost.toFixed(2)}) saves you extra trips.`,
       potentialSavings: -extraCost,
     };
   };
