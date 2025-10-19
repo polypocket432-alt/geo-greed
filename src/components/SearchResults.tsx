@@ -1,10 +1,10 @@
 import { Product } from "@/types/product";
-import { StoreCard } from "./StoreCard";
+import { ProductVariantCard } from "./ProductVariantCard";
 import { TrendingDown, AlertCircle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 interface SearchResultsProps {
-  product: Product | null;
+  product: Product[] | null;
   searchQuery: string;
 }
 
@@ -27,9 +27,11 @@ export function SearchResults({ product, searchQuery }: SearchResultsProps) {
     );
   }
 
-  const lowestPrice = Math.min(...product.stores.map((s) => s.price));
-  const highestPrice = Math.max(...product.stores.map((s) => s.price));
+  const allPrices = product.flatMap(p => p.stores.map(s => s.price));
+  const lowestPrice = Math.min(...allPrices);
+  const highestPrice = Math.max(...allPrices);
   const potentialSavings = highestPrice - lowestPrice;
+  const totalStores = product.reduce((sum, p) => sum + p.stores.length, 0);
 
   return (
     <section className="py-12 bg-secondary/30">
@@ -38,8 +40,10 @@ export function SearchResults({ product, searchQuery }: SearchResultsProps) {
           <div className="mb-8">
             <div className="flex items-start justify-between gap-4 mb-4">
               <div>
-                <h2 className="text-3xl font-bold mb-2">{product.name}</h2>
-                <Badge variant="secondary">{product.category}</Badge>
+                <h2 className="text-3xl font-bold mb-2">
+                  {product[0].name}
+                </h2>
+                <Badge variant="secondary">{product[0].category}</Badge>
               </div>
               
               {potentialSavings > 0 && (
@@ -56,13 +60,13 @@ export function SearchResults({ product, searchQuery }: SearchResultsProps) {
             </div>
             
             <p className="text-muted-foreground">
-              Showing {product.stores.length} stores near you, sorted by price
+              Found {product.length} variant{product.length !== 1 ? 's' : ''} across {totalStores} store listing{totalStores !== 1 ? 's' : ''}
             </p>
           </div>
 
-          <div className="space-y-4">
-            {product.stores.map((store) => (
-              <StoreCard key={store.id} store={store} lowestPrice={lowestPrice} />
+          <div className="space-y-6">
+            {product.map((variant) => (
+              <ProductVariantCard key={variant.id} product={variant} />
             ))}
           </div>
         </div>

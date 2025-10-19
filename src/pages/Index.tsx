@@ -7,7 +7,7 @@ import { Product, RelatedProduct } from "@/types/product";
 
 const Index = () => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [currentProduct, setCurrentProduct] = useState<Product | null>(null);
+  const [currentProduct, setCurrentProduct] = useState<Product[] | null>(null);
   const [relatedProducts, setRelatedProducts] = useState<RelatedProduct[]>([]);
 
   const handleSearch = (query: string) => {

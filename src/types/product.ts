@@ -14,6 +14,8 @@ export interface StorePrice {
 export interface Product {
   id: string;
   name: string;
+  brand?: string;
+  size?: string;
   category: string;
   imageUrl?: string;
   averagePrice: number;
