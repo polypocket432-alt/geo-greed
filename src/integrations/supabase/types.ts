@@ -70,6 +70,54 @@ export type Database = {
           },
         ]
       }
+      price_alerts: {
+        Row: {
+          created_at: string
+          current_price: number
+          id: string
+          is_active: boolean
+          notified: boolean
+          product_brand: string | null
+          product_id: string
+          product_name: string
+          store_id: string
+          store_name: string
+          target_price: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          current_price: number
+          id?: string
+          is_active?: boolean
+          notified?: boolean
+          product_brand?: string | null
+          product_id: string
+          product_name: string
+          store_id: string
+          store_name: string
+          target_price: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          current_price?: number
+          id?: string
+          is_active?: boolean
+          notified?: boolean
+          product_brand?: string | null
+          product_id?: string
+          product_name?: string
+          store_id?: string
+          store_name?: string
+          target_price?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string

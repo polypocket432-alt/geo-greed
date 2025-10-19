@@ -1,4 +1,4 @@
-import { Search, LogOut } from "lucide-react";
+import { Search, LogOut, Bell } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import heroImage from "@/assets/hero-shopping.jpg";
@@ -6,6 +6,7 @@ import { CartButton } from "./CartButton";
 import { LocationButton } from "./LocationButton";
 import { SearchAutocomplete } from "./SearchAutocomplete";
 import { useAuth } from "@/contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 interface SearchHeroProps {
   onSearch: (query: string) => void;
@@ -13,11 +14,20 @@ interface SearchHeroProps {
 
 export function SearchHero({ onSearch }: SearchHeroProps) {
   const { signOut, userName } = useAuth();
+  const navigate = useNavigate();
   
   return (
     <section className="relative overflow-hidden bg-gradient-hero">
       <div className="absolute top-4 right-4 z-20 flex gap-2">
         <LocationButton />
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={() => navigate("/alerts")}
+          title="Price Alerts"
+        >
+          <Bell className="h-5 w-5" />
+        </Button>
         <CartButton />
         <Button
           variant="outline"

@@ -6,6 +6,7 @@ import { StorePrice, Product } from "@/types/product";
 import { useCart } from "@/contexts/CartContext";
 import { useToast } from "@/hooks/use-toast";
 import { getStoreUrl } from "@/utils/storeUrls";
+import { PriceAlertDialog } from "@/components/PriceAlertDialog";
 
 interface StoreCardProps {
   store: StorePrice;
@@ -94,6 +95,12 @@ export function StoreCard({ store, lowestPrice, product }: StoreCardProps) {
               <ShoppingCart className="h-4 w-4 mr-1" />
               Add to Cart
             </Button>
+            <PriceAlertDialog
+              productId={product.id}
+              productName={product.name}
+              productBrand={product.brand}
+              store={store}
+            />
             {storeUrl && (
               <Button
                 variant="outline"
