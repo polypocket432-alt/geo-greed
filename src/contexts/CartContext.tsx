@@ -140,7 +140,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
       saveCartItemToDatabase(updatedItem);
     } else {
       const newItem: CartItem = {
-        id: `${product.id}-${store.id}-${Date.now()}`,
+        id: crypto.randomUUID(),
         product,
         store,
         quantity: 1,
