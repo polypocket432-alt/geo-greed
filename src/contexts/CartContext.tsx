@@ -15,6 +15,18 @@ interface CartContextType {
     groups: StoreGroup[];
     recommendation: string;
     potentialSavings: number;
+    singleStoreOption: {
+      type: "single";
+      storeName: string;
+      totalCost: number;
+      breakdown: { storeName: string; itemCount: number; subtotal: number; }[];
+    };
+    multipleStoresOption: {
+      type: "multiple";
+      storeCount: number;
+      totalCost: number;
+      breakdown: { storeName: string; itemCount: number; subtotal: number; }[];
+    };
   };
   getTotalItems: () => number;
   getTotalPrice: () => number;
@@ -200,19 +212,64 @@ export function CartProvider({ children }: { children: ReactNode }) {
     const groups = getStoreGroups();
     
     if (groups.length === 0) {
-      return { groups: [], recommendation: "", potentialSavings: 0 };
+      return { 
+        groups: [], 
+        recommendation: "", 
+        potentialSavings: 0,
+        singleStoreOption: {
+          type: "single" as const,
+          storeName: "",
+          totalCost: 0,
+          breakdown: [],
+        },
+        multipleStoresOption: {
+          type: "multiple" as const,
+          storeCount: 0,
+          totalCost: 0,
+          breakdown: [],
+        },
+      };
     }
 
     if (groups.length === 1) {
+      const singleGroup = groups[0];
       return {
         groups,
-        recommendation: `Shop at ${groups[0].storeName} for all your items.`,
+        recommendation: `Shop at ${singleGroup.storeName} for all your items.`,
         potentialSavings: 0,
+        singleStoreOption: {
+          type: "single" as const,
+          storeName: singleGroup.storeName,
+          totalCost: singleGroup.total,
+          breakdown: [{ 
+            storeName: singleGroup.storeName, 
+            itemCount: singleGroup.items.length, 
+            subtotal: singleGroup.total 
+          }],
+        },
+        multipleStoresOption: {
+          type: "multiple" as const,
+          storeCount: 1,
+          totalCost: singleGroup.total,
+          breakdown: [{ 
+            storeName: singleGroup.storeName, 
+            itemCount: singleGroup.items.length, 
+            subtotal: singleGroup.total 
+          }],
+        },
       };
     }
 
     // Check if all stores have 5+ items
     const allStoresHaveEnoughItems = groups.every(g => g.items.length >= 5);
+
+    // Build multiple stores breakdown
+    const multipleStoresBreakdown = groups.map(g => ({
+      storeName: g.storeName,
+      itemCount: g.items.length,
+      subtotal: g.total,
+    }));
+    const multipleStoresTotalCost = groups.reduce((sum, g) => sum + g.total, 0);
 
     if (allStoresHaveEnoughItems) {
       // Recommend shopping at all stores
@@ -220,6 +277,22 @@ export function CartProvider({ children }: { children: ReactNode }) {
         groups: groups.map(g => ({ ...g, recommended: true })),
         recommendation: `Shopping at ${groups.length} stores gets you the best prices on all items.`,
         potentialSavings: 0,
+        singleStoreOption: {
+          type: "single" as const,
+          storeName: groups[0].storeName,
+          totalCost: multipleStoresTotalCost,
+          breakdown: [{ 
+            storeName: groups[0].storeName, 
+            itemCount: cart.length, 
+            subtotal: multipleStoresTotalCost 
+          }],
+        },
+        multipleStoresOption: {
+          type: "multiple" as const,
+          storeCount: groups.length,
+          totalCost: multipleStoresTotalCost,
+          breakdown: multipleStoresBreakdown,
+        },
       };
     }
 
@@ -263,6 +336,22 @@ export function CartProvider({ children }: { children: ReactNode }) {
         groups: groups.map(g => ({ ...g, recommended: true })),
         recommendation: `To save £${savings.toFixed(2)}, visit all ${groups.length} stores. To save time, shop only at ${primaryStore.storeName} (extra cost: £${savings.toFixed(2)}).`,
         potentialSavings: savings,
+        singleStoreOption: {
+          type: "single" as const,
+          storeName: primaryStore.storeName,
+          totalCost: consolidatedCost,
+          breakdown: [{ 
+            storeName: primaryStore.storeName, 
+            itemCount: cart.length, 
+            subtotal: consolidatedCost 
+          }],
+        },
+        multipleStoresOption: {
+          type: "multiple" as const,
+          storeCount: groups.length,
+          totalCost: currentMultiStoreCost,
+          breakdown: multipleStoresBreakdown,
+        },
       };
     } else {
       // Small savings, recommend single store
@@ -273,6 +362,22 @@ export function CartProvider({ children }: { children: ReactNode }) {
         })),
         recommendation: `Save time - shop at ${primaryStore.storeName} for all items. Extra cost: only £${savings.toFixed(2)} vs visiting ${groups.length} stores.`,
         potentialSavings: savings,
+        singleStoreOption: {
+          type: "single" as const,
+          storeName: primaryStore.storeName,
+          totalCost: consolidatedCost,
+          breakdown: [{ 
+            storeName: primaryStore.storeName, 
+            itemCount: cart.length, 
+            subtotal: consolidatedCost 
+          }],
+        },
+        multipleStoresOption: {
+          type: "multiple" as const,
+          storeCount: groups.length,
+          totalCost: currentMultiStoreCost,
+          breakdown: multipleStoresBreakdown,
+        },
       };
     }
   };

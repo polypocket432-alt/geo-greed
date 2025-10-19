@@ -1,14 +1,17 @@
 import { useCart } from "@/contexts/CartContext";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { MapPin, Minus, Plus, Trash2, Store, AlertCircle, CheckCircle2 } from "lucide-react";
+import { MapPin, Minus, Plus, Trash2, Store, AlertCircle, CheckCircle2, Info } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
+import { ShoppingComparisonDialog } from "./ShoppingComparisonDialog";
+import { useState } from "react";
 
 export function CartView() {
-  const { updateQuantity, removeFromCart, clearCart, getTotalPrice, getOptimizedStoreGroups } = useCart();
-  const { groups: storeGroups, recommendation, potentialSavings } = getOptimizedStoreGroups();
+  const { cart, updateQuantity, removeFromCart, clearCart, getTotalPrice, getOptimizedStoreGroups } = useCart();
+  const { groups: storeGroups, recommendation, potentialSavings, singleStoreOption, multipleStoresOption } = getOptimizedStoreGroups();
+  const [showComparison, setShowComparison] = useState(false);
 
   if (storeGroups.length === 0) {
     return (
@@ -24,12 +27,31 @@ export function CartView() {
 
   return (
     <div className="space-y-6 py-6">
-      {recommendation && (
-        <Alert className={storeGroups.some(g => !g.recommended) ? "border-primary" : ""}>
-          <CheckCircle2 className="h-4 w-4" />
-          <AlertTitle>Shopping Recommendation</AlertTitle>
-          <AlertDescription>{recommendation}</AlertDescription>
-        </Alert>
+      {recommendation && storeGroups.length > 1 && (
+        <>
+          <Alert 
+            className={`cursor-pointer transition-colors hover:bg-secondary/50 ${storeGroups.some(g => !g.recommended) ? "border-primary" : ""}`}
+            onClick={() => setShowComparison(true)}
+          >
+            <CheckCircle2 className="h-4 w-4" />
+            <AlertTitle className="flex items-center gap-2">
+              Shopping Recommendation
+              <Info className="h-3 w-3 text-muted-foreground" />
+            </AlertTitle>
+            <AlertDescription>
+              {recommendation}
+              <span className="block text-xs text-muted-foreground mt-1">Click to see detailed comparison</span>
+            </AlertDescription>
+          </Alert>
+
+          <ShoppingComparisonDialog
+            open={showComparison}
+            onOpenChange={setShowComparison}
+            singleStoreOption={singleStoreOption}
+            multipleStoresOption={multipleStoresOption}
+            savings={potentialSavings}
+          />
+        </>
       )}
 
       {storeGroups.map((group) => (
