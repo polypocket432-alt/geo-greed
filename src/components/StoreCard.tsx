@@ -1,16 +1,30 @@
-import { MapPin, Store, Tag } from "lucide-react";
+import { MapPin, Store, Tag, ShoppingCart } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { StorePrice } from "@/types/product";
+import { Button } from "@/components/ui/button";
+import { StorePrice, Product } from "@/types/product";
+import { useCart } from "@/contexts/CartContext";
+import { useToast } from "@/hooks/use-toast";
 
 interface StoreCardProps {
   store: StorePrice;
   lowestPrice: number;
+  product: Product;
 }
 
-export function StoreCard({ store, lowestPrice }: StoreCardProps) {
+export function StoreCard({ store, lowestPrice, product }: StoreCardProps) {
   const isLowestPrice = store.price === lowestPrice;
   const savings = store.price - lowestPrice;
+  const { addToCart } = useCart();
+  const { toast } = useToast();
+
+  const handleAddToCart = () => {
+    addToCart(product, store);
+    toast({
+      title: "Added to cart",
+      description: `${product.brand ? product.brand + ' ' : ''}${product.name} from ${store.storeName}`,
+    });
+  };
 
   return (
     <Card className="hover:shadow-hover transition-all duration-300 bg-gradient-card">
@@ -60,15 +74,24 @@ export function StoreCard({ store, lowestPrice }: StoreCardProps) {
             </div>
           </div>
 
-          <div className="text-right flex-shrink-0">
+          <div className="text-right flex-shrink-0 flex flex-col items-end gap-2">
             <div className="text-3xl font-bold text-primary">
               ${store.price.toFixed(2)}
             </div>
             {!isLowestPrice && savings > 0 && (
-              <div className="text-sm text-muted-foreground mt-1">
+              <div className="text-sm text-muted-foreground">
                 +${savings.toFixed(2)}
               </div>
             )}
+            <Button
+              onClick={handleAddToCart}
+              disabled={!store.inStock}
+              size="sm"
+              className="mt-1"
+            >
+              <ShoppingCart className="h-4 w-4 mr-1" />
+              Add to Cart
+            </Button>
           </div>
         </div>
       </CardContent>

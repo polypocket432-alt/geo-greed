@@ -32,7 +32,7 @@ export function ProductVariantCard({ product }: ProductVariantCardProps) {
       
       <div className="space-y-3 pl-4 border-l-2 border-primary/20">
         {product.stores.map((store) => (
-          <StoreCard key={store.id} store={store} lowestPrice={lowestPrice} />
+          <StoreCard key={store.id} store={store} lowestPrice={lowestPrice} product={product} />
         ))}
       </div>
     </div>

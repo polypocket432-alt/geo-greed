@@ -3,6 +3,7 @@ import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import heroImage from "@/assets/hero-shopping.jpg";
+import { CartButton } from "./CartButton";
 
 interface SearchHeroProps {
   onSearch: (query: string) => void;
@@ -20,6 +21,9 @@ export function SearchHero({ onSearch }: SearchHeroProps) {
 
   return (
     <section className="relative overflow-hidden bg-gradient-hero">
+      <div className="absolute top-4 right-4 z-20">
+        <CartButton />
+      </div>
       <div className="absolute inset-0 z-0">
         <img 
           src={heroImage} 
