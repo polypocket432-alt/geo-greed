@@ -82,7 +82,7 @@ export default function Auth() {
               <ShoppingCart className="h-6 w-6 text-primary" />
             </div>
           </div>
-          <CardTitle className="text-2xl font-bold">Welcome to PriceFinder</CardTitle>
+          <CardTitle className="text-2xl font-bold">Welcome to BasketBeam</CardTitle>
           <CardDescription>
             Sign in or create an account to start comparing prices
           </CardDescription>
