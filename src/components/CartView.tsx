@@ -1,12 +1,14 @@
 import { useCart } from "@/contexts/CartContext";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { MapPin, Minus, Plus, Trash2, Store } from "lucide-react";
+import { MapPin, Minus, Plus, Trash2, Store, AlertCircle, CheckCircle2 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Badge } from "@/components/ui/badge";
 
 export function CartView() {
-  const { getStoreGroups, updateQuantity, removeFromCart, clearCart, getTotalPrice } = useCart();
-  const storeGroups = getStoreGroups();
+  const { updateQuantity, removeFromCart, clearCart, getTotalPrice, getOptimizedStoreGroups } = useCart();
+  const { groups: storeGroups, recommendation, potentialSavings } = getOptimizedStoreGroups();
 
   if (storeGroups.length === 0) {
     return (
@@ -22,12 +24,35 @@ export function CartView() {
 
   return (
     <div className="space-y-6 py-6">
+      {recommendation && (
+        <Alert className={storeGroups.some(g => !g.recommended) ? "border-primary" : ""}>
+          <CheckCircle2 className="h-4 w-4" />
+          <AlertTitle>Shopping Recommendation</AlertTitle>
+          <AlertDescription>{recommendation}</AlertDescription>
+        </Alert>
+      )}
+
       {storeGroups.map((group) => (
-        <Card key={group.storeId} className="bg-gradient-card">
+        <Card 
+          key={group.storeId} 
+          className={`bg-gradient-card ${group.recommended ? 'border-2 border-primary' : 'opacity-60'}`}
+        >
           <CardHeader className="pb-3">
             <div className="flex items-start justify-between gap-2">
               <div className="flex-1">
-                <CardTitle className="text-lg">{group.storeName}</CardTitle>
+                <div className="flex items-center gap-2 mb-1">
+                  <CardTitle className="text-lg">{group.storeName}</CardTitle>
+                  {group.recommended && (
+                    <Badge variant="success" className="text-xs">
+                      Recommended
+                    </Badge>
+                  )}
+                  {!group.recommended && group.items.length < 5 && (
+                    <Badge variant="outline" className="text-xs">
+                      {group.items.length} items only
+                    </Badge>
+                  )}
+                </div>
                 <div className="flex items-center gap-1 text-sm text-muted-foreground mt-1">
                   <MapPin className="h-3 w-3" />
                   <span>{group.distance} km away</span>

@@ -14,4 +14,6 @@ export interface StoreGroup {
   distance: number;
   items: CartItem[];
   total: number;
+  recommended: boolean;
+  alternativeTotal?: number;
 }
