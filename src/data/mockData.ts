@@ -603,7 +603,31 @@ export const relatedProductsMap: Record<string, RelatedProduct[]> = {
 
 export function searchProduct(query: string): Product[] | null {
   const normalizedQuery = query.toLowerCase().trim();
-  return mockProducts[normalizedQuery] || null;
+  
+  // First try exact match
+  if (mockProducts[normalizedQuery]) {
+    return mockProducts[normalizedQuery];
+  }
+  
+  // Try with 's' added or removed for plural/singular matching
+  const singularQuery = normalizedQuery.endsWith('s') 
+    ? normalizedQuery.slice(0, -1) 
+    : normalizedQuery + 's';
+  
+  if (mockProducts[singularQuery]) {
+    return mockProducts[singularQuery];
+  }
+  
+  // Try partial match - find if query is contained in any product key
+  const partialMatch = Object.keys(mockProducts).find(key => 
+    key.includes(normalizedQuery) || normalizedQuery.includes(key)
+  );
+  
+  if (partialMatch) {
+    return mockProducts[partialMatch];
+  }
+  
+  return null;
 }
 
 export function getRelatedProducts(query: string): RelatedProduct[] {
