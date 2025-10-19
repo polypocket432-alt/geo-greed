@@ -27,7 +27,7 @@ export function RelatedProducts({ products, onProductClick }: RelatedProductsPro
                   <Package className="h-12 w-12 text-primary" />
                 </div>
                 
-                <h3 className="font-semibold mb-1 truncate">{product.name}</h3>
+                <h3 className="font-semibold mb-1 truncate capitalize">{product.name}</h3>
                 <p className="text-sm text-muted-foreground mb-2">{product.category}</p>
                 
                 <div className="flex items-center justify-between">

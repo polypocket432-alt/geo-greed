@@ -610,65 +610,65 @@ export const mockProducts: Record<string, Product[]> = {
 
 export const relatedProductsMap: Record<string, RelatedProduct[]> = {
   "milk": [
-    { id: "r1", name: "Greek Yoghurt", category: "Dairy", lowestPrice: 2.50 },
-    { id: "r2", name: "Butter", category: "Dairy", lowestPrice: 1.85 },
-    { id: "r3", name: "Cream", category: "Dairy", lowestPrice: 1.50 },
-    { id: "r4", name: "Oat Milk", category: "Dairy Alternatives", lowestPrice: 1.80 },
+    { id: "r1", name: "yogurt", category: "Dairy", lowestPrice: 2.50 },
+    { id: "r2", name: "cheese", category: "Dairy", lowestPrice: 1.85 },
+    { id: "r3", name: "eggs", category: "Dairy", lowestPrice: 1.50 },
+    { id: "r4", name: "bread", category: "Bakery", lowestPrice: 1.80 },
   ],
   "bread": [
-    { id: "r5", name: "Bagels", category: "Bakery", lowestPrice: 1.20 },
-    { id: "r6", name: "Crumpets", category: "Bakery", lowestPrice: 0.95 },
-    { id: "r7", name: "Pitta Bread", category: "Bakery", lowestPrice: 0.85 },
-    { id: "r8", name: "Croissants", category: "Bakery", lowestPrice: 1.50 },
+    { id: "r5", name: "milk", category: "Dairy", lowestPrice: 1.20 },
+    { id: "r6", name: "eggs", category: "Dairy", lowestPrice: 0.95 },
+    { id: "r7", name: "cheese", category: "Dairy", lowestPrice: 0.85 },
+    { id: "r8", name: "chicken", category: "Meat & Poultry", lowestPrice: 1.50 },
   ],
   "eggs": [
-    { id: "r9", name: "Organic Eggs", category: "Dairy", lowestPrice: 3.50 },
-    { id: "r10", name: "Bacon", category: "Meat", lowestPrice: 2.50 },
-    { id: "r11", name: "Sausages", category: "Meat", lowestPrice: 2.00 },
+    { id: "r9", name: "milk", category: "Dairy", lowestPrice: 3.50 },
+    { id: "r10", name: "bread", category: "Bakery", lowestPrice: 2.50 },
+    { id: "r11", name: "chicken", category: "Meat & Poultry", lowestPrice: 2.00 },
   ],
   "chicken": [
-    { id: "r12", name: "Chicken Thighs", category: "Meat & Poultry", lowestPrice: 3.50 },
-    { id: "r13", name: "Turkey Mince", category: "Meat & Poultry", lowestPrice: 3.00 },
+    { id: "r12", name: "rice", category: "Rice & Pasta", lowestPrice: 3.50 },
+    { id: "r13", name: "pasta", category: "Rice & Pasta", lowestPrice: 3.00 },
   ],
   "rice": [
-    { id: "r14", name: "Jasmine Rice", category: "Rice & Pasta", lowestPrice: 2.80 },
-    { id: "r15", name: "Brown Rice", category: "Rice & Pasta", lowestPrice: 2.20 },
+    { id: "r14", name: "pasta", category: "Rice & Pasta", lowestPrice: 2.80 },
+    { id: "r15", name: "chicken", category: "Meat & Poultry", lowestPrice: 2.20 },
   ],
   "pasta": [
-    { id: "r16", name: "Penne", category: "Rice & Pasta", lowestPrice: 1.00 },
-    { id: "r17", name: "Pasta Sauce", category: "Cooking Ingredients", lowestPrice: 0.95 },
+    { id: "r16", name: "rice", category: "Rice & Pasta", lowestPrice: 1.00 },
+    { id: "r17", name: "tomatoes", category: "Fresh Produce", lowestPrice: 0.95 },
   ],
   "cheese": [
-    { id: "r18", name: "Mozzarella", category: "Dairy", lowestPrice: 1.80 },
-    { id: "r19", name: "Parmesan", category: "Dairy", lowestPrice: 2.50 },
+    { id: "r18", name: "milk", category: "Dairy", lowestPrice: 1.80 },
+    { id: "r19", name: "bread", category: "Bakery", lowestPrice: 2.50 },
   ],
   "tomatoes": [
-    { id: "r20", name: "Cucumbers", category: "Fresh Produce", lowestPrice: 0.70 },
-    { id: "r21", name: "Lettuce", category: "Fresh Produce", lowestPrice: 0.85 },
+    { id: "r20", name: "onions", category: "Fresh Produce", lowestPrice: 0.70 },
+    { id: "r21", name: "potatoes", category: "Fresh Produce", lowestPrice: 0.85 },
   ],
   "bananas": [
-    { id: "r22", name: "Apples", category: "Fresh Produce", lowestPrice: 1.50 },
-    { id: "r23", name: "Oranges", category: "Fresh Produce", lowestPrice: 1.20 },
+    { id: "r22", name: "apples", category: "Fresh Produce", lowestPrice: 1.50 },
+    { id: "r23", name: "oranges", category: "Fresh Produce", lowestPrice: 1.20 },
   ],
   "apples": [
-    { id: "r24", name: "Bananas", category: "Fresh Produce", lowestPrice: 0.85 },
-    { id: "r25", name: "Oranges", category: "Fresh Produce", lowestPrice: 1.20 },
+    { id: "r24", name: "bananas", category: "Fresh Produce", lowestPrice: 0.85 },
+    { id: "r25", name: "oranges", category: "Fresh Produce", lowestPrice: 1.20 },
   ],
   "potatoes": [
-    { id: "r26", name: "Carrots", category: "Fresh Produce", lowestPrice: 0.60 },
-    { id: "r27", name: "Onions", category: "Fresh Produce", lowestPrice: 0.75 },
+    { id: "r26", name: "carrots", category: "Fresh Produce", lowestPrice: 0.60 },
+    { id: "r27", name: "onions", category: "Fresh Produce", lowestPrice: 0.75 },
   ],
   "carrots": [
-    { id: "r28", name: "Potatoes", category: "Fresh Produce", lowestPrice: 1.30 },
-    { id: "r29", name: "Onions", category: "Fresh Produce", lowestPrice: 0.75 },
+    { id: "r28", name: "potatoes", category: "Fresh Produce", lowestPrice: 1.30 },
+    { id: "r29", name: "onions", category: "Fresh Produce", lowestPrice: 0.75 },
   ],
   "onions": [
-    { id: "r30", name: "Garlic", category: "Fresh Produce", lowestPrice: 0.80 },
-    { id: "r31", name: "Potatoes", category: "Fresh Produce", lowestPrice: 1.30 },
+    { id: "r30", name: "carrots", category: "Fresh Produce", lowestPrice: 0.80 },
+    { id: "r31", name: "potatoes", category: "Fresh Produce", lowestPrice: 1.30 },
   ],
   "yogurt": [
-    { id: "r32", name: "Greek Yogurt", category: "Dairy", lowestPrice: 2.50 },
-    { id: "r33", name: "Milk", category: "Dairy", lowestPrice: 1.55 },
+    { id: "r32", name: "milk", category: "Dairy", lowestPrice: 2.50 },
+    { id: "r33", name: "cheese", category: "Dairy", lowestPrice: 1.55 },
   ],
 };
 
