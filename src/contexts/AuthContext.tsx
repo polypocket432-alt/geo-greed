@@ -6,10 +6,11 @@ import { useToast } from "@/hooks/use-toast";
 interface AuthContextType {
   user: User | null;
   session: Session | null;
-  signUp: (email: string, password: string) => Promise<{ error: any }>;
+  signUp: (email: string, password: string, name: string) => Promise<{ error: any }>;
   signIn: (email: string, password: string) => Promise<{ error: any }>;
   signOut: () => Promise<void>;
   loading: boolean;
+  userName: string | null;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -18,6 +19,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
+  const [userName, setUserName] = useState<string | null>(null);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -27,6 +29,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setSession(session);
         setUser(session?.user ?? null);
         setLoading(false);
+        
+        if (session?.user) {
+          setTimeout(() => {
+            fetchUserName(session.user.id);
+          }, 0);
+        } else {
+          setUserName(null);
+        }
       }
     );
 
@@ -35,19 +45,38 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setSession(session);
       setUser(session?.user ?? null);
       setLoading(false);
+      
+      if (session?.user) {
+        fetchUserName(session.user.id);
+      }
     });
 
     return () => subscription.unsubscribe();
   }, []);
 
-  const signUp = async (email: string, password: string) => {
+  const fetchUserName = async (userId: string) => {
+    const { data, error } = await supabase
+      .from("profiles")
+      .select("name")
+      .eq("id", userId)
+      .single();
+
+    if (!error && data) {
+      setUserName(data.name);
+    }
+  };
+
+  const signUp = async (email: string, password: string, name: string) => {
     try {
       const redirectUrl = `${window.location.origin}/`;
       const { error } = await supabase.auth.signUp({
         email,
         password,
         options: {
-          emailRedirectTo: redirectUrl
+          emailRedirectTo: redirectUrl,
+          data: {
+            name: name
+          }
         }
       });
       
@@ -116,7 +145,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <AuthContext.Provider
-      value={{ user, session, signUp, signIn, signOut, loading }}
+      value={{ user, session, signUp, signIn, signOut, loading, userName }}
     >
       {children}
     </AuthContext.Provider>

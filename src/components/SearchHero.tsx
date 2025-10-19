@@ -12,7 +12,7 @@ interface SearchHeroProps {
 }
 
 export function SearchHero({ onSearch }: SearchHeroProps) {
-  const { signOut } = useAuth();
+  const { signOut, userName } = useAuth();
   
   return (
     <section className="relative overflow-hidden bg-gradient-hero">
@@ -38,6 +38,11 @@ export function SearchHero({ onSearch }: SearchHeroProps) {
       
       <div className="relative z-10 container mx-auto px-4 py-20 md:py-32">
         <div className="max-w-3xl mx-auto text-center space-y-6">
+          {userName && (
+            <p className="text-2xl md:text-3xl font-semibold text-foreground">
+              Hello, {userName}!
+            </p>
+          )}
           <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
             Find the <span className="text-primary">Best Prices</span> Near You
           </h1>

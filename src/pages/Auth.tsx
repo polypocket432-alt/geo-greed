@@ -17,7 +17,8 @@ const authSchema = z.object({
 export default function Auth() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
+  const [name, setName] = useState("");
+  const [errors, setErrors] = useState<{ email?: string; password?: string; name?: string }>({});
   const [isLoading, setIsLoading] = useState(false);
   const { signIn, signUp } = useAuth();
   const navigate = useNavigate();
@@ -58,8 +59,13 @@ export default function Auth() {
     e.preventDefault();
     if (!validateForm()) return;
     
+    if (!name.trim()) {
+      setErrors({ name: "Name is required" });
+      return;
+    }
+    
     setIsLoading(true);
-    const { error } = await signUp(email, password);
+    const { error } = await signUp(email, password, name);
     setIsLoading(false);
     
     if (!error) {
@@ -126,6 +132,20 @@ export default function Auth() {
             
             <TabsContent value="signup">
               <form onSubmit={handleSignUp} className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="signup-name">Name</Label>
+                  <Input
+                    id="signup-name"
+                    type="text"
+                    placeholder="Your name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                  />
+                  {errors.name && (
+                    <p className="text-sm text-destructive">{errors.name}</p>
+                  )}
+                </div>
                 <div className="space-y-2">
                   <Label htmlFor="signup-email">Email</Label>
                   <Input
